@@ -86,17 +86,75 @@ def depthFirstSearch(problem: SearchProblem):
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    solpath = []
+    visited = set()
+    frontier = util.Stack()
+    frontier.push((problem.getStartState(), solpath))
+    while frontier:
+        item = frontier.pop()
+        if item[0] not in visited:
+            visited.add(item[0])
+            solpath = item[1]
+        if problem.isGoalState(item[0]):
+            c = [i[1] for i in solpath]
+            return c
+        for i in problem.getSuccessors(item[0]):
+            if i[0] not in visited:
+                d = item[1][:]
+                d.append((i[0], i[1]))
+                frontier.push((i[0], d))
 
 def breadthFirstSearch(problem: SearchProblem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    solpath = []
+    visited = set()
+    frontier = util.Queue()
+    frontier.push((problem.getStartState(), solpath))
+    while frontier:
+        item = frontier.pop()
+        if item[0] not in visited:
+            visited.add(item[0])
+            solpath = item[1]
+        if problem.isGoalState(item[0]):
+            c = [i[1] for i in solpath]
+            return c
+        for i in problem.getSuccessors(item[0]):
+            if i[0] not in visited:
+                z = [x[0] for x in frontier.list]
+                if i[0] in z:
+                    continue
+                d = item[1][:]
+                d.append((i[0], i[1]))
+                frontier.push((i[0], d))
 
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    solpath = []
+    visited = set()
+    track = util.Queue()
+    frontier = util.PriorityQueue()
+    frontier.push((problem.getStartState(), solpath, 0), 0)
+    track.push((problem.getStartState(), solpath))
+    while frontier:
+        item = frontier.pop()
+        track.pop()
+        if item[0] not in visited:
+            visited.add(item[0])
+            solpath = item[1]
+        if problem.isGoalState(item[0]):
+            c = [i[1] for i in solpath]
+            return c
+        for i in problem.getSuccessors(item[0]):
+            if i[0] not in visited:
+                z = [x[0] for x in track.list]
+                if i[0] in z:
+                    continue
+                d = item[1][:]
+                d.append((i[0], i[1]))
+                frontier.push((i[0], d, item[2] + i[2]), item[2] + i[2])
+                track.push((i[0], d))
 
 def nullHeuristic(state, problem=None):
     """
@@ -108,7 +166,34 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    solpath = []
+    visited = set()
+    track = util.Queue()
+    frontier = util.PriorityQueue()
+    frontier.push((problem.getStartState(), solpath, 0), 0)
+    track.push((problem.getStartState(), solpath))
+    while frontier:
+        item = frontier.pop()
+        track.pop()
+        if item[0] not in visited:
+            visited.add(item[0])
+            solpath = item[1]
+        if problem.isGoalState(item[0]):
+            c = [i[1] for i in solpath]
+            return c
+        for i in problem.getSuccessors(item[0]):
+            if i[0] not in visited:
+                skip = False
+                for x in track.list:
+                    if i[0] == x[0] and i[2] > x[2]:
+                        skip = True
+                if not skip:
+                    d = item[1][:]
+                    d.append((i[0], i[1]))
+                    frontier.push((i[0], d, item[2] + i[2]), item[2] + i[2] + heuristic(i[0], problem))
+                    print(str(heuristic(i[0], problem)) + ": " + str(item[2]+i[2]+heuristic(i[0],problem)))
+                    track.push((i[0], d, item[2] + i[2]))
+
 
 
 # Abbreviations
