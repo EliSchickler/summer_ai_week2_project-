@@ -1,0 +1,5 @@
+This assignment went much better for me compared to the last project.
+This is because this project was less tedious due to the fact that I had a given formula and blueprint on how to create the search algorithms.
+Because of this, I also had less code breaking errors that were easily solved, making the amount of time I spent on this project a lot less compared to the first project.
+However, it wasn't completely smooth sailing. It took me a while to figure out how to add the children to the stack/queue, and how to use the push and pop functions efficiently.
+Even though I struggled with this, with the help of stack overflow, W3Schools, and my friend and classmate David, I was able to perservere and figure out how to solve my errors to complete the assignment.
